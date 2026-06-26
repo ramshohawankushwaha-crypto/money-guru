@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Money Guru - आपका पर्सनल फाइनेंस गाइड</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
     <header>
-        <h1>💸 Money Guru</h1>
-        <p>सरल भाषा में पैसे मैनेज करना सीखें और बचाएं</p>
-        <button id="btn-logout" style="display:none; float:right; margin-top:-30px;">लॉगआउट</button>
+        <div class="header-container">
+            <h1>💸 Money Guru</h1>
+            <p>सरल हिंदी में पैसे मैनेज करना और बचाना सीखें</p>
+            <button id="btn-logout" class="btn-logout" style="display:none;">लॉगआउट</button>
+        </div>
     </header>
 
     <div class="container">
@@ -34,23 +37,46 @@
         </section>
 
         <div id="main-app" style="display: none;">
+            
             <section class="dashboard">
                 <div class="card income-card">
-                    <h3>कुल आय</h3>
+                    <h3>कुल आय (Income)</h3>
                     <p id="total-income">₹0</p>
                 </div>
                 <div class="card expense-card">
-                    <h3>कुल खर्च</h3>
+                    <h3>कुल खर्च (Expense)</h3>
                     <p id="total-expense">₹0</p>
                 </div>
                 <div class="card savings-card">
-                    <h3>कुल बचत</h3>
+                    <h3>कुल बचत (Savings)</h3>
                     <p id="total-savings">₹0</p>
                 </div>
             </section>
 
-            <section class="transaction-form">
-                <h2>नया लेन-देन जोड़ें</h2>
+            <section class="app-section budget-section">
+                <h2>🎯 3. बजट प्लानर (Budget Planner)</h2>
+                <div class="budget-box">
+                    <div class="input-group-inline">
+                        <input type="number" id="monthly-budget-input" placeholder="इस महीने का बजट सेट करें (₹)">
+                        <button id="btn-set-budget" class="btn-accent">बजट सेट करें</button>
+                    </div>
+                    <p id="budget-status-text">बजट सीमा: ₹0 | खर्च: ₹0</p>
+                    <div id="budget-alert" class="alert-message" style="display:none;">⚠️ चेतावनी: आप अपने तय बजट से अधिक खर्च कर चुके हैं!</div>
+                </div>
+            </section>
+
+            <section class="app-section goals-section">
+                <h2>🎯 4. बचत के लक्ष्य (Savings Goals)</h2>
+                <form id="goal-form" class="input-group-inline">
+                    <input type="text" id="goal-name" placeholder="लक्ष्य का नाम (उदा: बाइक, घर, मोबाइल)" required>
+                    <input type="number" id="goal-target" placeholder="कुल ज़रूरी राशि (₹)" required>
+                    <button type="submit" class="btn-accent">लक्ष्य बनाएं</button>
+                </form>
+                <div id="goals-container"></div>
+            </section>
+
+            <section class="app-section transaction-form">
+                <h2>💰 2. लेन-देन जोड़ें (Expense Tracker)</h2>
                 <form id="money-form">
                     <div class="input-group">
                         <label for="type">प्रकार चुनिए</label>
@@ -59,31 +85,78 @@
                             <option value="expense">खर्च (Expense)</option>
                         </select>
                     </div>
-                    
                     <div class="input-group">
                         <label for="amount">राशि (₹)</label>
-                        <input type="number" id="amount" placeholder="रकम डालें" required>
+                        <input type="number" id="amount" placeholder="रकम दर्ज करें" required>
                     </div>
-
                     <div class="input-group">
                         <label for="category">कैटेगरी</label>
                         <select id="category" required>
-                            <option value="Salary">सैलरी / कमाई</option>
+                            <option value="Salary">कमाई / सैलरी</option>
                             <option value="Food">खाना (Food)</option>
                             <option value="Travel">यात्रा (Travel)</option>
-                            <option value="Bills">बिजली / मोबाइल बिल</option>
-                            <option value="Others">अन्य</option>
+                            <option value="Electricity">बिजली / मोबाइल बिल</option>
+                            <option value="Fees">कोर्स / स्कूल फीस</option>
+                            <option value="Others">अन्य खर्च</option>
                         </select>
                     </div>
-
-                    <button type="submit" class="btn-submit">जोड़ें</button>
+                    <button type="submit" class="btn-submit">डेटा जोड़ें</button>
                 </form>
             </section>
 
-            <section class="history">
-                <h2>हालिया लेन-देन (History)</h2>
-                <ul id="transaction-list"></ul>
+            <section class="app-section reports-section">
+                <h2>📊 7. रिपोर्ट्स और खर्च का ग्राफ (Reports)</h2>
+                <div class="chart-container" style="position: relative; height:40vh; width:100%">
+                    <canvas id="expenseChart"></canvas>
+                </div>
+                <div class="history">
+                    <h3>हालिया लेन-देन का इतिहास</h3>
+                    <ul id="transaction-list"></ul>
+                </div>
             </section>
+
+            <section class="app-section learning-section">
+                <h2>📚 5 & 6. फाइनेंशियल लर्निंग और क्विज़ (Quiz & Certificate)</h2>
+                <div class="premium-badge">✨ फ्री + प्रीमियम मॉडल (पेड कोर्स और सर्टिफिकेट फीस उपलब्ध)</div>
+                
+                <div class="lessons-container">
+                    <div class="lesson-card">
+                        <h3>पाठ 1: बजट बनाने का सही नियम (50/30/20 नियम)</h3>
+                        <p>अपनी कुल कमाई का 50% ज़रूरी चीज़ों पर, 30% अपनी इच्छाओं पर खर्च करें, और कम से कम 20% भविष्य के लिए बचाएं या निवेश करें।</p>
+                        <button class="btn-quiz" onclick="openQuiz(1)">पाठ 1 की क्विज़ खेलें</button>
+                    </div>
+
+                    <div class="lesson-card">
+                        <h3>पाठ 2: कर्ज के जाल से कैसे बचें?</h3>
+                        <p>कभी भी दिखावे के लिए क्रेडिट कार्ड या महंगे पर्सनल लोन न लें। केवल वही कर्ज लें जो आपको और अमीर बनाने में मदद करे (जैसे बिजनेस या एजुकेशन लोन)।</p>
+                        <button class="btn-quiz" onclick="openQuiz(2)">पाठ 2 की क्विज़ खेलें</button>
+                    </div>
+                </div>
+
+                <div id="quiz-modal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <h3 id="quiz-question">सवाल यहाँ दिखेगा...</h3>
+                        <div id="quiz-options"></div>
+                        <p id="quiz-result" style="font-weight:bold; margin-top:10px;"></p>
+                        <button id="btn-close-quiz" class="btn-submit" style="margin-top:10px; background:#555;">बंद करें</button>
+                    </div>
+                </div>
+
+                <div id="certificate-box" class="certificate-container" style="display:none;">
+                    <h3>🎉 बधाई हो! आपको मनी गुरु सर्टिफिकेट मिला है</h3>
+                    <div class="certificate">
+                        <p>यह प्रमाणित किया जाता है कि आपने</p>
+                        <h4 id="cert-user-name">यूज़र</h4>
+                        <p>ने <strong>मनी गुरु वित्तीय साक्षरता कोर्स</strong> को सफलतापूर्वक पूरा कर लिया है।</p>
+                        <small>प्रमाणित तिथि: <span id="cert-date"></span></small>
+                    </div>
+                </div>
+            </section>
+
+            <div class="ads-banner">
+                <small>प्रायोजित विज्ञापन (Ads Area)</small>
+            </div>
+
         </div>
     </div>
 
