@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Guru - आपका पर्सनल फाइनेंस गाइड</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>💸 Money Guru</h1>
+        <p>सरल भाषा में पैसे मैनेज करना सीखें और बचाएं</p>
+        <button id="btn-logout" style="display:none; float:right; margin-top:-30px;">लॉगआउट</button>
+    </header>
+
+    <div class="container">
+        <section id="auth-section" class="form-container">
+            <h2 id="auth-title">लॉगिन करें</h2>
+            <form id="auth-form">
+                <div class="input-group">
+                    <label for="auth-email">ईमेल</label>
+                    <input type="email" id="auth-email" placeholder="अपना ईमेल डालें" required>
+                </div>
+                <div class="input-group">
+                    <label for="auth-password">पासवर्ड</label>
+                    <input type="password" id="auth-password" placeholder="पासवर्ड डालें" required>
+                </div>
+                <button type="submit" id="btn-auth-submit" class="btn-submit">लॉगिन</button>
+                <p id="auth-toggle" style="text-align:center; cursor:pointer; margin-top:10px; color:#1565c0;">
+                    नया अकाउंट बनाएं (Sign Up)
+                </p>
+            </form>
+        </section>
+
+        <div id="main-app" style="display: none;">
+            <section class="dashboard">
+                <div class="card income-card">
+                    <h3>कुल आय</h3>
+                    <p id="total-income">₹0</p>
+                </div>
+                <div class="card expense-card">
+                    <h3>कुल खर्च</h3>
+                    <p id="total-expense">₹0</p>
+                </div>
+                <div class="card savings-card">
+                    <h3>कुल बचत</h3>
+                    <p id="total-savings">₹0</p>
+                </div>
+            </section>
+
+            <section class="transaction-form">
+                <h2>नया लेन-देन जोड़ें</h2>
+                <form id="money-form">
+                    <div class="input-group">
+                        <label for="type">प्रकार चुनिए</label>
+                        <select id="type" required>
+                            <option value="income">आय (Income)</option>
+                            <option value="expense">खर्च (Expense)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="amount">राशि (₹)</label>
+                        <input type="number" id="amount" placeholder="रकम डालें" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="category">कैटेगरी</label>
+                        <select id="category" required>
+                            <option value="Salary">सैलरी / कमाई</option>
+                            <option value="Food">खाना (Food)</option>
+                            <option value="Travel">यात्रा (Travel)</option>
+                            <option value="Bills">बिजली / मोबाइल बिल</option>
+                            <option value="Others">अन्य</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-submit">जोड़ें</button>
+                </form>
+            </section>
+
+            <section class="history">
+                <h2>हालिया लेन-देन (History)</h2>
+                <ul id="transaction-list"></ul>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
