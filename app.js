@@ -1,9 +1,18 @@
-// [यहाँ सबसे ऊपर आपकी अपनी Firebase config इम्पोर्ट लाइन्स रहेंगी, उन्हें न बदलें]
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Initialize Firebase (अपनी क्रेडेंशियल्स का उपयोग करें)
+// आपका असली Firebase कॉन्फ़िगरेशन (अनलॉक चाबियां)
+const firebaseConfig = {
+    apiKey: "AIzaSyCxpzZYu-hroYzF0nimiUZZTtsxp-YNOWE",
+    authDomain: "money-guru-d7661.firebaseapp.com",
+    projectId: "money-guru-d7661",
+    storageBucket: "money-guru-d7661.firebasestorage.app",
+    messagingSenderId: "492010281342",
+    appId: "1:492010281342:web:ebc1fa70ed2c9dd5323b2f"
+};
+
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -97,7 +106,7 @@ function loadTransactions(userId) {
         let income = 0;
         let expense = 0;
         const listEl = document.getElementById('transaction-list');
-        listEl.innerHTML = '';
+        if (listEl) listEl.innerHTML = '';
 
         let categoryData = {};
 
@@ -110,9 +119,11 @@ function loadTransactions(userId) {
                 categoryData[data.category] = (categoryData[data.category] || 0) + data.amount;
             }
 
-            const li = document.createElement('li');
-            li.innerHTML = `<span>${data.date} - ${data.category} (${data.type === 'income' ? 'आय' : 'खर्च'})</span> <strong>₹${data.amount}</strong>`;
-            listEl.appendChild(li);
+            if (listEl) {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${data.date} - ${data.category} (${data.type === 'income' ? 'आय' : 'खर्च'})</span> <strong>₹${data.amount}</strong>`;
+                listEl.appendChild(li);
+            }
         });
 
         currentExpensesTotal = expense;
@@ -126,48 +137,56 @@ function loadTransactions(userId) {
 }
 
 // --- 3. Budget Planner Logic ---
-document.getElementById('btn-set-budget').addEventListener('click', () => {
-    const bInput = document.getElementById('monthly-budget-input').value;
-    if(bInput) {
-        monthlyBudget = parseFloat(bInput);
-        checkBudgetAlert();
-    }
-});
+const btnSetBudget = document.getElementById('btn-set-budget');
+if(btnSetBudget) {
+    btnSetBudget.addEventListener('click', () => {
+        const bInput = document.getElementById('monthly-budget-input').value;
+        if(bInput) {
+            monthlyBudget = parseFloat(bInput);
+            checkBudgetAlert();
+        }
+    });
+}
 
 function checkBudgetAlert() {
-    document.getElementById('budget-status-text').innerText = `बजट सीमा: ₹${monthlyBudget} | कुल खर्च: ₹${currentExpensesTotal}`;
+    const statusText = document.getElementById('budget-status-text');
+    if(statusText) statusText.innerText = `बजट सीमा: ₹${monthlyBudget} | कुल खर्च: ₹${currentExpensesTotal}`;
     const alertBox = document.getElementById('budget-alert');
-    if (monthlyBudget > 0 && currentExpensesTotal > monthlyBudget) {
-        alertBox.style.display = 'block';
-    } else {
-        alertBox.style.display = 'none';
+    if(alertBox) {
+        if (monthlyBudget > 0 && currentExpensesTotal > monthlyBudget) {
+            alertBox.style.display = 'block';
+        } else {
+            alertBox.style.display = 'none';
+        }
     }
 }
 
 // --- 4. Savings Goals Logic ---
 const goalForm = document.getElementById('goal-form');
-goalForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!currentUser) return;
+if(goalForm) {
+    goalForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!currentUser) return;
 
-    const goal = {
-        userId: currentUser.uid,
-        name: document.getElementById('goal-name').value,
-        target: parseFloat(document.getElementById('goal-target').value),
-        saved: 0
-    };
-    await addDoc(collection(db, "goals"), goal);
-    goalForm.reset();
-});
+        const goal = {
+            userId: currentUser.uid,
+            name: document.getElementById('goal-name').value,
+            target: parseFloat(document.getElementById('goal-target').value),
+            saved: 0
+        };
+        await addDoc(collection(db, "goals"), goal);
+        goalForm.reset();
+    });
+}
 
 function loadGoals(userId) {
     const q = query(collection(db, "goals"), where("userId", "==", userId));
     onSnapshot(q, (snapshot) => {
         const container = document.getElementById('goals-container');
+        if(!container) return;
         container.innerHTML = '';
         snapshot.forEach((doc) => {
             const g = doc.data();
-            // सिमुलेशन के लिए कुल बचत का थोड़ा हिस्सा गोल में प्रोग्रेस बार दिखाने हेतु मानते हैं
             let progressPercent = Math.min((currentExpensesTotal * 0.1 / g.target) * 100, 100).toFixed(0); 
             
             const div = document.createElement('div');
@@ -186,12 +205,13 @@ function loadGoals(userId) {
 
 // --- 7. Chart.js Graph Implementation ---
 function updateChart(categoryData) {
-    const ctx = document.getElementById('expenseChart').getContext('2d');
+    const chartCanvas = document.getElementById('expenseChart');
+    if(!chartCanvas) return;
+    const ctx = chartCanvas.getContext('2d');
     const labels = Object.keys(categoryData);
     const data = Object.values(categoryData);
 
     if (myChart) { myChart.destroy(); }
-
     if(labels.length === 0) return;
 
     myChart = new Chart(ctx, {
@@ -208,7 +228,7 @@ function updateChart(categoryData) {
     });
 }
 
-// --- 5 & 6. Quiz & Certificate Logic Window Scope Variables ---
+// --- 5 & 6. Quiz & Certificate Logic ---
 const quizData = {
     1: { q: "50/30/20 नियम के अनुसार बचत में कितना प्रतिशत जाना चाहिए?", options: ["50%", "30%", "20%"], correct: 2 },
     2: { q: "दिखावे के लिए क्रेडिट कार्ड से लोन लेना कैसा कर्ज है?", options: ["अच्छा कर्ज", "खराब कर्ज (कर्ज का जाल)", "फायदेमंद"], correct: 1 }
@@ -240,12 +260,17 @@ window.openQuiz = function(lessonId) {
     document.getElementById('quiz-modal').style.display = 'flex';
 };
 
-document.getElementById('btn-close-quiz').onclick = () => {
-    document.getElementById('quiz-modal').style.display = 'none';
-};
+const btnCloseQuiz = document.getElementById('btn-close-quiz');
+if(btnCloseQuiz) {
+    btnCloseQuiz.onclick = () => {
+        document.getElementById('quiz-modal').style.display = 'none';
+    };
+}
 
 function showCertificate() {
     document.getElementById('certificate-box').style.display = 'block';
-    document.getElementById('cert-user-name').innerText = currentUser.email.split('@')[0];
+    if(currentUser) {
+        document.getElementById('cert-user-name').innerText = currentUser.email.split('@')[0];
+    }
     document.getElementById('cert-date').innerText = new Date().toLocaleDateString('hi-IN');
 }
