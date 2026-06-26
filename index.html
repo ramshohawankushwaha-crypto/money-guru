@@ -152,7 +152,76 @@
                     </div>
                 </div>
             </section>
+<!-- पैसे मैनेज करने की पूरी गाइड का बटन और मॉडल -->
+<section class="app-section guide-button-section" style="text-align: center; background: #e3f2fd; border-left: 5px solid #1565c0;">
+    <h3 style="color: #1565c0; margin-top: 0;">💡 अमीर बनने का सीक्रेट फॉर्मूला जानना चाहते हैं?</h3>
+    <p>पैसे मैनेज करने और बचाने का सही तरीका 3-4 पेजों की इस पूरी गाइड में ग्राफ के साथ समझें।</p>
+    <button id="btn-open-guide" class="btn-submit" style="background: #1565c0; max-width: 300px;">📖 पूरी गाइड ग्राफ के साथ देखें</button>
+</section>
 
+<!-- फुल स्क्रीन गाइड मॉडल (Popup) -->
+<div id="guide-modal" class="modal" style="display:none; overflow-y: auto;">
+    <div class="modal-content" style="max-width: 750px; width: 95%; padding: 30px; border-radius: 12px;">
+        <span id="btn-close-guide" style="float: right; font-size: 28px; font-weight: bold; cursor: pointer; color: #aaa;">&times;</span>
+        
+        <div id="guide-pages">
+            <!-- पेज 1 -->
+            <div class="guide-page" id="page-1">
+                <span class="page-number">पेज 1/4</span>
+                <h2 style="color: #1b5e20;">🌱 भाग 1: पैसे मैनेज करने की शुरुआत कहाँ से करें?</h2>
+                <p>ज्यादातर लोग सोचते हैं कि अमीर बनने के लिए बहुत ज्यादा कमाना ज़रूरी है, लेकिन सच यह है कि अमीर वो बनता है जो <strong>पैसे सही से मैनेज करना</strong> जानता है।</p>
+                <blockquote><strong>फॉर्मूला याद रखें:</strong> कमाई - बचत = खर्च (पहले बचत अलग निकालें, फिर बचे हुए पैसों से खर्च चलाएं!)</blockquote>
+                <p>नीचे दिए गए ग्राफ को देखें। यह दुनिया का सबसे प्रसिद्ध <strong>50/30/20 नियम</strong> है जो हर आम इंसान को अमीर बना सकता है:</p>
+                
+                <!-- विजुअल ग्राफिकल चार्ट एरिया -->
+                <div class="guide-chart-container">
+                    <canvas id="guideRuleChart"></canvas>
+                </div>
+            </div>
+
+            <!-- पेज 2 -->
+            <div class="guide-page" id="page-2" style="display:none;">
+                <span class="page-number">पेज 2/4</span>
+                <h2 style="color: #e65100;">⚖️ भाग 2: 50/30/20 नियम का पूरा गणित</h2>
+                <p>आइए ग्राफ के तीनों हिस्सों को आसान शब्दों में समझते हैं:</p>
+                <ul>
+                    <li><strong>50% ज़रूरतें (Needs):</strong> यह वो पैसे हैं जिनके बिना आप जी नहीं सकते। जैसे—घर का राशन, मकान का किराया, बच्चों की स्कूल फीस, बिजली और मोबाइल का बिल।</li>
+                    <li><strong>30% इच्छाएं (Wants):</strong> यह आपके शौक पूरे करने के लिए है। जैसे—नया फोन लेना, बाहर होटल में खाना, फिल्में देखना या घूमना। अगर बजट कम हो, तो सबसे पहले इसी हिस्से में कटौती करें।</li>
+                    <li><strong>20% बचत और निवेश (Savings):</strong> यह पैसा आपकी तिजोरी में बंद रहने के लिए नहीं है, बल्कि इसे शेयर मार्केट, म्यूचुअल फंड, या RD/FD में निवेश करना है ताकि पैसा आपके लिए पैसा बनाए।</li>
+                </ul>
+            </div>
+
+            <!-- पेज 3 -->
+            <div class="guide-page" id="page-3" style="display:none;">
+                <span class="page-number">पेज 3/4</span>
+                <h2 style="color: #1565c0;">🛡️ भाग 3: इमरजेंसी फंड और कर्ज से मुक्ति</h2>
+                <p>पैसे बचाने का सबसे दूसरा बड़ा कदम है अपना <strong>इमर्जेंसी फंड (Emergency Fund)</strong> बनाना।</p>
+                <p>अगर आपके घर का मासिक खर्च ₹20,000 है, तो आपके बैंक खाते में कम से कम 6 महीने का खर्च यानी <strong>₹1,20,000</strong> हमेशा अलग से फिक्स होने चाहिए। यह पैसा नौकरी जाने या बीमारी के समय आपके काम आएगा और आपको किसी के आगे हाथ फैलाने या कर्ज लेने से बचाएगा।</p>
+                <div class="alert-message" style="background: #efebe9; color: #4e342e; border-left-color: #4e342e;">
+                    💡 <strong>गोल्डन रूल:</strong> कभी भी दिखावे या शौक के लिए क्रेडिट कार्ड से लोन (खराब कर्ज) न लें। यह दलदल की तरह है।
+                </div>
+            </div>
+
+            <!-- पेज 4 -->
+            <div class="guide-page" id="page-4" style="display:none;">
+                <span class="page-number">पेज 4/4</span>
+                <h2 style="color: #9c27b0;">🚀 भाग 4: पैसे से पैसा कैसे बनाएं? (निवेश की शक्ति)</h2>
+                <p>केवल पैसे बचाकर कोई अमीर नहीं बन सकता, क्योंकि महंगाई हर साल आपके पैसे की कीमत कम कर देती है। सही तरीका है <strong>कंपाउंडिंग (Compounding) की शक्ति</strong> का उपयोग करना।</p>
+                <p>अगर आप हर महीने सिर्फ ₹2,000 का निवेश (Mutual Fund SIP) करते हैं और उसपर 12% का रिटर्न मिलता है, तो अगले 20 सालों में आपका कुल निवेश ₹4.8 लाख होगा, लेकिन उसकी कुल कीमत लगभग <strong>₹20 लाख</strong> बन जाएगी!</p>
+                
+                <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; font-weight: bold; color: #2e7d32;">
+                    🎉 बधाई हो! आपने पैसे मैनेज करने का सही तरीका सीख लिया है। अब अपने ऐप में ऊपर जाकर आज से ही अपना बजट और लेन-देन ट्रैक करना शुरू करें!
+                </div>
+            </div>
+        </div>
+
+        <!-- नेविगेशन बटन (Next/Previous) -->
+        <div class="guide-navigation" style="display: flex; justify-content: space-between; margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px;">
+            <button id="btn-prev-page" class="btn-accent" style="background: #777; display: none;">&larr; पिछला पेज</button>
+            <button id="btn-next-page" class="btn-accent">अगला पेज &rarr;</button>
+        </div>
+    </div>
+</div>
             <div class="ads-banner">
                 <small>प्रायोजित विज्ञापन (Ads Area)</small>
             </div>
