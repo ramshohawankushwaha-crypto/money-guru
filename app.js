@@ -274,3 +274,86 @@ function showCertificate() {
     }
     document.getElementById('cert-date').innerText = new Date().toLocaleDateString('hi-IN');
 }
+// --- 3-4 पेज का मनी मैनेजमेंट गाइड लॉजिक ---
+const btnOpenGuide = document.getElementById('btn-open-guide');
+const btnCloseGuide = document.getElementById('btn-close-guide');
+const guideModal = document.getElementById('guide-modal');
+const btnNextPage = document.getElementById('btn-next-page');
+const btnPrevPage = document.getElementById('btn-prev-page');
+
+let currentGuidePage = 1;
+const totalGuidePages = 4;
+let guideChartInstance = null;
+
+// गाइड खोलें
+if(btnOpenGuide) {
+    btnOpenGuide.addEventListener('click', () => {
+        guideModal.style.display = 'flex';
+        currentGuidePage = 1;
+        updateGuidePagesVisibility();
+        setTimeout(initGuideChart, 100); // ग्राफ बनाने के लिए छोटा सा डिले
+    });
+}
+
+// गाइड बंद करें
+if(btnCloseGuide) {
+    btnCloseGuide.addEventListener('click', () => {
+        guideModal.style.display = 'none';
+    });
+}
+
+// अगला पेज बटन
+btnNextPage.addEventListener('click', () => {
+    if (currentGuidePage < totalGuidePages) {
+        currentGuidePage++;
+        updateGuidePagesVisibility();
+    } else {
+        guideModal.style.display = 'none'; // आखिरी पेज पर बंद करें
+    }
+});
+
+// पिछला पेज बटन
+btnPrevPage.addEventListener('click', () => {
+    if (currentGuidePage > 1) {
+        currentGuidePage--;
+        updateGuidePagesVisibility();
+    }
+});
+
+// पेजों को छुपाने और दिखाने का फंक्शन
+function updateGuidePagesVisibility() {
+    for (let i = 1; i <= totalGuidePages; i++) {
+        const page = document.getElementById(`page-${i}`);
+        if(page) page.style.display = (i === currentGuidePage) ? 'block' : 'none';
+    }
+
+    // बटनों के टेक्स्ट और विजिबिलिटी को संभालना
+    btnPrevPage.style.display = (currentGuidePage === 1) ? 'none' : 'block';
+    btnNextPage.innerText = (currentGuidePage === totalGuidePages) ? 'समझ गए, बंद करें' : 'अगला पेज →';
+}
+
+// पेज 1 के अंदर 50/30/20 नियम का ग्राफिकल पाई चार्ट (Visual Graph)
+function initGuideChart() {
+    const ctx = document.getElementById('guideRuleChart').getContext('2d');
+    
+    if (guideChartInstance) { guideChartInstance.destroy(); }
+    
+    guideChartInstance = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['50% ज़रूरतें (राशन, बिल, फीस)', '30% इच्छाएं (शौक, घूमना, होटल)', '20% बचत और निवेश'],
+            datasets: [{
+                data: [50, 30, 20],
+                backgroundColor: ['#2e7d32', '#ff9800', '#1565c0'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+}
