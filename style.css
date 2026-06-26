@@ -1,57 +1,66 @@
-:root {
-    --primary-color: #2e7d32;
-    --expense-color: #c62828;
-    --background-color: #f5f5f5;
-    --card-bg: #ffffff;
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--background-color);
+    background-color: #f4f7f6;
     color: #333;
 }
 
 header {
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
     color: white;
+    padding: 20px 0;
     text-align: center;
-    padding: 20px 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.header-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+}
+
+header h1 { margin: 0; font-size: 28px; }
+header p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
+
+.btn-logout {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    background: #c62828;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 20px auto;
     padding: 0 15px;
 }
 
-.dashboard {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-.card {
-    background: var(--card-bg);
-    flex: 1;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.income-card h3 { color: var(--primary-color); }
-.expense-card h3 { color: var(--expense-color); }
-.savings-card h3 { color: #1565c0; }
-
-.transaction-form, .history, .form-container {
-    background: var(--card-bg);
+.app-section {
+    background: white;
     padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.form-container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 450px;
+    margin: 50px auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .input-group {
@@ -61,7 +70,7 @@ header {
 .input-group label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .input-group input, .input-group select {
@@ -69,38 +78,172 @@ header {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box;
+}
+
+.input-group-inline {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.input-group-inline input {
+    flex: 1;
+    min-width: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .btn-submit {
     width: 100%;
-    background-color: var(--primary-color);
-    color: white;
     padding: 12px;
+    background: #2e7d32;
+    color: white;
     border: none;
     border-radius: 5px;
     font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
-.btn-submit:hover {
-    background-color: #1b5e20;
+.btn-submit:hover { background: #1b5e20; }
+
+.btn-accent {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
+/* Dashboard Cards */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
-ul li {
-    display: flex;
-    justify-content: space-between;
+.card {
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.income-card { background: #2e7d32; }
+.expense-card { background: #c62828; }
+.savings-card { background: #1565c0; }
+
+.card h3 { margin: 0; font-size: 14px; text-transform: uppercase; opacity: 0.8; }
+.card p { margin: 10px 0 0 0; font-size: 24px; font-weight: bold; }
+
+/* Progress Bar for Goals */
+.goal-item {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+    border: 1px solid #eee;
+}
+
+.progress-container {
+    background: #e0e0e0;
+    border-radius: 10px;
+    height: 15px;
+    width: 100%;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: #1565c0;
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s;
+}
+
+/* Budget Alert */
+.alert-message {
+    background: #ffebee;
+    color: #c62828;
     padding: 10px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 5px;
-    background: #fff;
-    border-radius: 4px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-weight: bold;
+    border-left: 5px solid #c62828;
 }
 
-.li-income { border-left: 5px solid var(--primary-color); }
-.li-expense { border-left: 5px solid var(--expense-color); }
+/* Learning & Quiz styles */
+.premium-badge {
+    background: #fff8e1;
+    color: #f57c00;
+    padding: 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 13px;
+    border: 1px solid #ffe082;
+    margin-bottom: 15px;
+}
+
+.lesson-card {
+    background: #f1f8e9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 5px solid #7cb342;
+}
+
+.btn-quiz {
+    background: #7cb342;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+/* Modal Popup Box */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 100;
+}
+
+.modal-content {
+    background: white; padding: 25px; border-radius: 8px; max-width: 400px; width: 90%;
+}
+
+.option-btn {
+    display: block; width: 100%; padding: 10px; margin: 5px 0;
+    background: #eee; border: none; border-radius: 4px; text-align: left; cursor: pointer;
+}
+.option-btn:hover { background: #ddd; }
+
+/* Certificate */
+.certificate-container {
+    margin-top: 20px; text-align: center;
+}
+
+.certificate {
+    border: 4px double #ff9800; background: #fffde7; padding: 30px; border-radius: 8px;
+    display: inline-block; max-width: 100%;
+}
+
+/* Ads Space */
+.ads-banner {
+    background: #eee; text-align: center; padding: 15px; color: #777; border-radius: 5px; margin-top: 20px;
+}
+
+#transaction-list { list-style: none; padding: 0; }
+#transaction-list li {
+    background: #f9f9f9; padding: 10px; border-bottom: 1px solid #eee;
+    display: flex; justify-content: space-between;
+}
